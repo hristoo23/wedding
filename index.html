@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Потвърждение за Сватба</title>
+    <style>
+        body {
+            background-color: #fbeff2;
+            font-family: 'Georgia', serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .overlay {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 2px solid #eecad5;
+        }
+        h1 {
+            text-align: center;
+            color: #b95d7b;
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background-color: #fdfdfd;
+        }
+        button {
+            background-color: #b95d7b;
+            color: white;
+            padding: 15px;
+            margin-top: 30px;
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #a24e6c;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="overlay">
+    <div class="container">
+        <h1>Потвърждение за присъствие</h1>
+        <form action="https://script.google.com/macros/s/AKfycbyZrcqYAOw1wLhhQ6M0O1slhlApqTLLqQY3R6jnvSaf0aUFiEbwFIGDbVRAG3zDqcYR/exec" method="POST">
+            <label for="name">Вашето име:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="attendance">Ще присъствате ли?</label>
+            <select id="attendance" name="attendance" required>
+                <option value="">Изберете...</option>
+                <option value="Да">Да</option>
+                <option value="Не">Не</option>
+            </select>
+
+            <label for="guests">Колко човека ще водите с Вас?</label>
+            <input type="number" id="guests" name="guests" min="0" max="10" value="0">
+
+            <label for="guestNames">Имена на придружаващите гости (ако има такива):</label>
+            <textarea id="guestNames" name="guestNames" rows="3" placeholder="Напр. Мария Иванова, Георги Георгиев"></textarea>
+
+            <label for="drink">Предпочитан алкохол:</label>
+            <select id="drink" name="drink">
+                <option value="">Изберете...</option>
+                <option value="Вино">Вино</option>
+                <option value="Водка">Водка</option>
+                <option value="Уиски">Уиски</option>
+                <option value="Узо">Узо</option>
+                <option value="Ракия">Ракия</option>
+            </select>
+
+            <button type="submit">Изпрати</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
