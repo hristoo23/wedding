@@ -116,8 +116,11 @@
       <label for="guests">Колко човека ще водите с Вас?</label>
       <input type="number" id="guests" name="guests" min="0" max="10" value="0" />
 
-      <label for="guestNames">Имена на придружаващите гости (ако има такива):</label>
-      <textarea id="guestNames" name="guestNames" rows="3" placeholder="Напр. Мария Иванова, Георги Георгиев"></textarea>
+      <!-- Това поле ще се показва само ако има гости -->
+      <div id="guestNamesBlock" style="display: none;">
+        <label for="guestNames">Имена на придружаващите гости:</label>
+        <textarea id="guestNames" name="guestNames" rows="3" placeholder="Напр. Мария Иванова, Георги Георгиев"></textarea>
+      </div>
 
       <label for="meal">Избор на основно ястие:</label>
       <select id="meal" name="meal" required>
@@ -136,7 +139,6 @@
         <option value="Ракия">Ракия</option>
       </select>
 
-      <!-- Динамично добавени блокове за гости -->
       <div id="guestDetailsContainer"></div>
 
       <button type="submit">Изпрати</button>
@@ -149,9 +151,15 @@
   const thankYou = document.getElementById("thankYou");
   const guestsInput = document.getElementById("guests");
   const guestDetailsContainer = document.getElementById("guestDetailsContainer");
+  const guestNamesBlock = document.getElementById("guestNamesBlock");
 
   guestsInput.addEventListener("input", () => {
     const count = parseInt(guestsInput.value) || 0;
+
+    // Показване или скриване на блока с имена
+    guestNamesBlock.style.display = count > 0 ? "block" : "none";
+
+    // Динамични полета за храна и напитка за гости
     guestDetailsContainer.innerHTML = "";
     for (let i = 1; i <= count; i++) {
       const guestBlock = document.createElement("div");
