@@ -64,7 +64,6 @@
     button:hover {
       background-color: #a24e6c;
     }
-
     .thank-you {
       display: none;
       position: fixed;
@@ -82,12 +81,10 @@
       color: #b95d7b;
       flex-direction: column;
     }
-
     .thank-you .heart {
       font-size: 60px;
       margin-top: 20px;
     }
-
     @media (max-width: 768px) {
       .container {
         padding: 30px;
@@ -122,13 +119,13 @@
       <label for="guestNames">Имена на придружаващите гости (ако има такива):</label>
       <textarea id="guestNames" name="guestNames" rows="3" placeholder="Напр. Мария Иванова, Георги Георгиев"></textarea>
 
-       <label for="meal">Избор на основно ястие:</label>
+      <label for="meal">Избор на основно ястие:</label>
       <select id="meal" name="meal" required>
         <option value="">Изберете...</option>
         <option value="Пилешко">Пилешко</option>
         <option value="Свинско">Свинско</option>
       </select>
-      
+
       <label for="drink">Предпочитан алкохол:</label>
       <select id="drink" name="drink">
         <option value="">Изберете...</option>
@@ -139,6 +136,9 @@
         <option value="Ракия">Ракия</option>
       </select>
 
+      <!-- Динамично добавени блокове за гости -->
+      <div id="guestDetailsContainer"></div>
+
       <button type="submit">Изпрати</button>
     </form>
   </div>
@@ -147,6 +147,35 @@
 <script>
   const form = document.getElementById("rsvpForm");
   const thankYou = document.getElementById("thankYou");
+  const guestsInput = document.getElementById("guests");
+  const guestDetailsContainer = document.getElementById("guestDetailsContainer");
+
+  guestsInput.addEventListener("input", () => {
+    const count = parseInt(guestsInput.value) || 0;
+    guestDetailsContainer.innerHTML = "";
+    for (let i = 1; i <= count; i++) {
+      const guestBlock = document.createElement("div");
+      guestBlock.innerHTML = `
+        <label for="guest${i}Drink">Гост ${i} - Алкохол:</label>
+        <select id="guest${i}Drink" name="guest${i}Drink">
+          <option value="">Изберете...</option>
+          <option value="Вино">Вино</option>
+          <option value="Водка">Водка</option>
+          <option value="Уиски">Уиски</option>
+          <option value="Узо">Узо</option>
+          <option value="Ракия">Ракия</option>
+        </select>
+
+        <label for="guest${i}Food">Гост ${i} - Основно ястие:</label>
+        <select id="guest${i}Food" name="guest${i}Food">
+          <option value="">Изберете...</option>
+          <option value="Пилешко">Пилешко</option>
+          <option value="Свинско">Свинско</option>
+        </select>
+      `;
+      guestDetailsContainer.appendChild(guestBlock);
+    }
+  });
 
   form.addEventListener("submit", function(e) {
     e.preventDefault();
@@ -171,3 +200,4 @@
 
 </body>
 </html>
+
