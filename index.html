@@ -2,163 +2,130 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Потвърждение за присъствие</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f9e6ed;
-      padding: 20px;
-    }
-    .container {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      max-width: 600px;
-      margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h1 {
-      text-align: center;
-      color: #b95d7b;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background-color: #b95d7b;
-      color: white;
-      border: none;
-      padding: 15px;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 20px;
-      width: 100%;
-    }
-    button:hover {
-      background-color: #a04a66;
-    }
-    .guest-section {
-      margin-top: 20px;
-      padding: 15px;
-      background-color: #f7dce5;
-      border-radius: 8px;
-    }
+    body { font-family: Arial; background: #fdf0f5; padding: 30px; }
+    form { background: white; padding: 20px; border-radius: 10px; max-width: 600px; margin: auto; }
+    label { display: block; margin-top: 15px; }
+    input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; margin-top: 5px; }
+    button { margin-top: 20px; padding: 12px; background-color: #c76c8c; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+    .success { text-align: center; font-size: 24px; color: green; display: none; }
+    .guest-block { border: 1px solid #ccc; padding: 15px; margin-top: 15px; border-radius: 8px; background: #f9e8f0; }
+    .guest-block h4 { margin-top: 0; }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>Потвърждение за присъствие</h1>
-  <form id="rsvpForm">
-    <label for="name">Вашето име:</label>
-    <input type="text" id="name" name="name" required />
+<form id="rsvpForm">
+  <h2>Потвърдете присъствието си</h2>
 
-    <label for="attendance">Ще присъствате ли?</label>
-    <select id="attendance" name="attendance" required>
-      <option value="">Изберете...</option>
-      <option value="Да">Да</option>
-      <option value="Не">Не</option>
-    </select>
+  <label for="name">Име:</label>
+  <input type="text" name="name" required>
 
-    <label for="guests">Колко човека ще водите с Вас?</label>
-    <input type="number" id="guests" name="guests" min="0" max="10" value="0" />
+  <label for="attendance">Ще присъствате ли?</label>
+  <select name="attendance" required id="attendanceSelect">
+    <option value="">Изберете</option>
+    <option value="Да">Да</option>
+    <option value="Не">Не</option>
+  </select>
 
-    <div id="guestNamesBlock" style="display: none;">
-      <label for="guestNames">Имена на гостите:</label>
-      <textarea id="guestNames" name="guestNames" rows="2" placeholder="напр. Иван Петров, Мария Иванова"></textarea>
-    </div>
+  <label for="guests">Брой гости:</label>
+  <input type="number" name="guests" id="guestsInput" min="0" value="0" disabled>
 
-    <label for="meal">Избор на основно ястие:</label>
-    <select id="meal" name="meal" required>
-      <option value="">Изберете...</option>
-      <option value="Пилешко">Пилешко</option>
-      <option value="Свинско">Свинско</option>
-    </select>
+  <div id="guestsDetails"></div>
 
-    <label for="drink">Предпочитан алкохол:</label>
-    <select id="drink" name="drink">
-      <option value="">Изберете...</option>
-      <option value="Вино">Вино</option>
-      <option value="Водка">Водка</option>
-      <option value="Уиски">Уиски</option>
-      <option value="Узо">Узо</option>
-      <option value="Ракия">Ракия</option>
-    </select>
+  <label for="meal">Основно ястие:</label>
+  <select name="meal" id="mainMealSelect">
+    <option value="">Изберете</option>
+    <option value="Пилешко">Пилешко</option>
+    <option value="Свинско">Свинско</option>
+  </select>
 
-    <div id="guestDetailsContainer"></div>
+  <label for="drink">Алкохол:</label>
+  <select name="drink" id="mainDrinkSelect">
+    <option value="">Изберете</option>
+    <option value="Вино">Вино</option>
+    <option value="Уиски">Уиски</option>
+    <option value="Водка">Водка</option>
+    <option value="Ракия">Ракия</option>
+  </select>
 
-    <button type="submit">Изпрати</button>
-  </form>
-</div>
+  <button type="submit">Изпрати</button>
+</form>
+
+<div class="success" id="successMsg">Благодарим! Данните са записани. ❤️</div>
 
 <script>
+  const attendanceSelect = document.getElementById('attendanceSelect');
+  const guestsInput = document.getElementById('guestsInput');
+  const guestsDetails = document.getElementById('guestsDetails');
   const form = document.getElementById("rsvpForm");
-  const guestsInput = document.getElementById("guests");
-  const guestDetailsContainer = document.getElementById("guestDetailsContainer");
-  const guestNamesBlock = document.getElementById("guestNamesBlock");
+  const successMsg = document.getElementById("successMsg");
 
-  guestsInput.addEventListener("input", () => {
+  attendanceSelect.addEventListener('change', () => {
+    if(attendanceSelect.value === 'Да') {
+      guestsInput.disabled = false;
+    } else {
+      guestsInput.value = 0;
+      guestsInput.disabled = true;
+      guestsDetails.innerHTML = '';
+    }
+  });
+
+  guestsInput.addEventListener('input', () => {
     const count = parseInt(guestsInput.value) || 0;
+    guestsDetails.innerHTML = '';
 
-    guestNamesBlock.style.display = count > 0 ? "block" : "none";
+    for(let i = 1; i <= count; i++) {
+      const guestBlock = document.createElement('div');
+      guestBlock.className = 'guest-block';
 
-    guestDetailsContainer.innerHTML = "";
-    for (let i = 1; i <= count; i++) {
-      const guestBlock = document.createElement("div");
-      guestBlock.classList.add("guest-section");
       guestBlock.innerHTML = `
-        <label for="guest${i}Food">Гост ${i} - Ястие:</label>
-        <select id="guest${i}Food" name="guest${i}Food">
-          <option value="">Изберете...</option>
+        <h4>Гост ${i}</h4>
+        <label for="guestName${i}">Име на госта:</label>
+        <input type="text" name="guestName${i}" id="guestName${i}" required>
+
+        <label for="guestMeal${i}">Основно ястие за госта:</label>
+        <select name="guestMeal${i}" id="guestMeal${i}" required>
+          <option value="">Изберете</option>
           <option value="Пилешко">Пилешко</option>
           <option value="Свинско">Свинско</option>
         </select>
 
-        <label for="guest${i}Drink">Гост ${i} - Алкохол:</label>
-        <select id="guest${i}Drink" name="guest${i}Drink">
-          <option value="">Изберете...</option>
+        <label for="guestDrink${i}">Алкохол за госта:</label>
+        <select name="guestDrink${i}" id="guestDrink${i}" required>
+          <option value="">Изберете</option>
           <option value="Вино">Вино</option>
-          <option value="Водка">Водка</option>
           <option value="Уиски">Уиски</option>
-          <option value="Узо">Узо</option>
+          <option value="Водка">Водка</option>
           <option value="Ракия">Ракия</option>
         </select>
       `;
-      guestDetailsContainer.appendChild(guestBlock);
+
+      guestsDetails.appendChild(guestBlock);
     }
   });
 
   form.addEventListener("submit", function(e) {
     e.preventDefault();
+
     const formData = new FormData(form);
 
-    fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+    // Пример за изпращане (замени URL с твоя)
+    fetch("YOUR_WEB_APP_URL", {
       method: "POST",
-      body: formData
+      body: formData,
     })
-    .then(response => {
-      if (response.ok) {
-        alert("Благодарим ви! Отговорът е записан.");
-        form.reset();
-        guestDetailsContainer.innerHTML = "";
-        guestNamesBlock.style.display = "none";
+    .then(res => {
+      if (res.ok) {
+        form.style.display = "none";
+        successMsg.style.display = "block";
       } else {
-        alert("Грешка при изпращане. Моля, опитайте отново.");
+        alert("Грешка при записване.");
       }
     })
-    .catch(error => {
-      alert("Грешка: " + error.message);
+    .catch(err => {
+      alert("Грешка при връзка: " + err.message);
     });
   });
 </script>
