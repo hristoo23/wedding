@@ -18,30 +18,30 @@
   <h2>Потвърдете присъствието си</h2>
 
   <label for="name">Име:</label>
-  <input type="text" name="име" required>
+  <input type="text" name="name" required>
 
   <label for="attendance">Ще присъствате ли?</label>
-  <select name="присъствие" required>
+  <select name="attendance" required>
     <option value="">Изберете</option>
     <option value="Да">Да</option>
     <option value="Не">Не</option>
   </select>
 
   <label for="guests">Брой гости:</label>
-  <input type="number" name="бройГости" min="0" value="0">
+  <input type="number" name="guests" min="0" value="0">
 
   <label for="guestNames">Имена на гости:</label>
-  <textarea name="именаГости"></textarea>
+  <textarea name="guestNames"></textarea>
 
   <label for="meal">Основно ястие:</label>
-  <select name="основноЯстие">
+  <select name="meal">
     <option value="">Изберете</option>
     <option value="Пилешко">Пилешко</option>
     <option value="Свинско">Свинско</option>
   </select>
 
   <label for="drink">Алкохол:</label>
-  <select name="алкохол">
+  <select name="drink">
     <option value="">Изберете</option>
     <option value="Вино">Вино</option>
     <option value="Уиски">Уиски</option>
@@ -63,7 +63,7 @@
 
     const formData = new FormData(form);
 
-    fetch("https://script.google.com/macros/s/AKfycbzQGvtLtT8bqki7C24jLOGer-iFKXLkxcT3gH9MFb7-XFtsQGc10afxWEaNGy29aD78EA/exec", {
+    fetch("YOUR_WEB_APP_URL", {
       method: "POST",
       body: formData,
     })
